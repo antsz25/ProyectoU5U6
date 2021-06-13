@@ -16,5 +16,10 @@ namespace ProyectoU5U6_Comentarios
         {
             InitializeComponent();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

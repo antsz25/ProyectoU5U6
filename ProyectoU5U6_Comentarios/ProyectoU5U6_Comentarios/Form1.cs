@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -26,8 +27,6 @@ namespace ProyectoU5U6_Comentarios
         public Form1()
         {
             InitializeComponent();
-
-            Reescribe();
             AgregarComentarios(Reescribe());
         }
         private List<Comentario> Reescribe()
@@ -315,7 +314,7 @@ namespace ProyectoU5U6_Comentarios
                 }
                 catch(Exception e)
                 {
-                    MessageBox.Show(e.ToString());
+                    Console.WriteLine("No hay comentarios registrados. Se define como el primer commentario en 1000");
                     return 999;
                 }
             }
@@ -345,10 +344,6 @@ namespace ProyectoU5U6_Comentarios
 
         }
 
-        private void lblikes1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void panel2_Paint(object sender, PaintEventArgs e)
         {

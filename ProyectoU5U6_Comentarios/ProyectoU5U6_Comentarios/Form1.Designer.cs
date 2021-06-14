@@ -30,12 +30,12 @@ namespace ProyectoU5U6_Comentarios
         private void InitializeComponent()
         {
             this.LayoutComent = new System.Windows.Forms.TableLayoutPanel();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.pPubliComent = new System.Windows.Forms.Panel();
             this.btpubli = new System.Windows.Forms.Button();
             this.rtxtb_publi = new System.Windows.Forms.RichTextBox();
             this.lbpubli = new System.Windows.Forms.Label();
             this.LayoutComent.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.pPubliComent.SuspendLayout();
             this.SuspendLayout();
             // 
             // LayoutComent
@@ -44,7 +44,7 @@ namespace ProyectoU5U6_Comentarios
             this.LayoutComent.ColumnCount = 1;
             this.LayoutComent.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.LayoutComent.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.LayoutComent.Controls.Add(this.panel2, 0, 1);
+            this.LayoutComent.Controls.Add(this.pPubliComent, 0, 1);
             this.LayoutComent.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.LayoutComent.Location = new System.Drawing.Point(0, 12);
             this.LayoutComent.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -56,17 +56,17 @@ namespace ProyectoU5U6_Comentarios
             this.LayoutComent.TabIndex = 0;
             this.LayoutComent.Paint += new System.Windows.Forms.PaintEventHandler(this.LayoutComent_Paint);
             // 
-            // panel2
+            // pPubliComent
             // 
-            this.panel2.Controls.Add(this.btpubli);
-            this.panel2.Controls.Add(this.rtxtb_publi);
-            this.panel2.Controls.Add(this.lbpubli);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(3, 185);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1075, 162);
-            this.panel2.TabIndex = 7;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
+            this.pPubliComent.Controls.Add(this.btpubli);
+            this.pPubliComent.Controls.Add(this.rtxtb_publi);
+            this.pPubliComent.Controls.Add(this.lbpubli);
+            this.pPubliComent.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pPubliComent.Location = new System.Drawing.Point(3, 185);
+            this.pPubliComent.Name = "pPubliComent";
+            this.pPubliComent.Size = new System.Drawing.Size(1075, 162);
+            this.pPubliComent.TabIndex = 7;
+            this.pPubliComent.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
             // btpubli
             // 
@@ -91,9 +91,9 @@ namespace ProyectoU5U6_Comentarios
             this.lbpubli.AutoSize = true;
             this.lbpubli.Location = new System.Drawing.Point(3, 0);
             this.lbpubli.Name = "lbpubli";
-            this.lbpubli.Size = new System.Drawing.Size(93, 20);
+            this.lbpubli.Size = new System.Drawing.Size(110, 20);
             this.lbpubli.TabIndex = 0;
-            this.lbpubli.Text = "Nombre_publi";
+            this.lbpubli.Text = "Antonio Sanchez";
             // 
             // Form1
             // 
@@ -112,15 +112,15 @@ namespace ProyectoU5U6_Comentarios
             this.Text = "Comentarios";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.LayoutComent.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.pPubliComent.ResumeLayout(false);
+            this.pPubliComent.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.TableLayoutPanel LayoutComent;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel pPubliComent;
         private System.Windows.Forms.Button btpubli;
         private System.Windows.Forms.RichTextBox rtxtb_publi;
         private System.Windows.Forms.Label lbpubli;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,14 +11,194 @@ using System.Windows.Forms;
 
 namespace ProyectoU5U6_Comentarios
 {
+    class Comentario
+    {
+        public int id { get; set; }
+        public string autor { get; set; }
+        public string fecha_publi { get; set; }
+        public string comentario { get; set; }
+        public string dir_ip { get; set; }
+        public int likes { get; set; }
+        public int inapropiado { get; set; }
+
+       
+        public override string ToString()
+        {
+            return string.Format($"{id},{autor},{fecha_publi},{comentario},{dir_ip},{inapropiado},{likes}");
+        }
+       
+    }
+    class ComentariosDB
+    {
+        public static List<Comentario> ReadFromFile(string path)
+        {
+            List<Comentario> products = new List<Comentario>();
+
+            StreamReader textIn = new StreamReader(new FileStream(path, FileMode.Open, FileAccess.Read));
+
+            while (textIn.Peek() != -1)    // Leer hasta el final
+            {
+                string row = textIn.ReadLine();  // row =  "1000|Prueba|13/Junio/2021|198.192.0.1|Esto es una prueba|3|0"
+                string[] columns = row.Split('|'); // ["1000","Prueba","13/Junio/2021","Esto es una prueba","3","0"]; 
+                Comentario c = new Comentario();
+                c.id = int.Parse(columns[0]);
+                c.autor = columns[1];
+                c.fecha_publi = columns[2];
+                c.dir_ip = columns[3];
+                c.comentario = columns[4];
+                c.likes = int.Parse(columns[5]);
+                c.inapropiado = int.Parse(columns[6]);
+                products.Add(c);
+            }
+
+            textIn.Close();
+
+            return products;
+        }
+    }
     public partial class Form1 : Form
     {
+        private Label lbinapropi;
+        private Label lbfechai;
+        private Label lbautori;
+        private Panel pComment2;
+        private RichTextBox rtxtb_commenti;
+        private Button bt_respi;
+        private Label lblikesi;
+        private Button bt_likei;
+        private int i = 0;
         public Form1()
         {
             InitializeComponent();
+            List<Comentario> comments = ComentariosDB.ReadFromFile(Application.StartupPath + @"/DB/Comentarios.txt");
+            foreach (var comment in comments)
+            {
+                // 
+                // bt_likei
+                // 
+                bt_likei = new Button();
+                this.bt_likei.Location = new System.Drawing.Point(8, 69);
+                this.bt_likei.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+                this.bt_likei.Name = "bt_like"+comment.id;
+                this.bt_likei.Size = new System.Drawing.Size(81, 28);
+                this.bt_likei.TabIndex = 0;
+                this.bt_likei.Text = "Me gusta";
+                this.bt_likei.UseVisualStyleBackColor = true;
+                this.bt_likei.Click += new System.EventHandler(this.button1_Click);
+                // 
+                // bt_respi
+                // 
+                bt_respi = new Button();
+                this.bt_respi.Location = new System.Drawing.Point(97, 69);
+                this.bt_respi.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+                this.bt_respi.Name = "bt_resp"+comment.id;
+                this.bt_respi.Size = new System.Drawing.Size(87, 28);
+                this.bt_respi.TabIndex = 1;
+                this.bt_respi.Text = "Responder";
+                this.bt_respi.UseVisualStyleBackColor = true;
+                this.bt_respi.Click += new System.EventHandler(this.button2_Click);
+                // 
+                // lblikesi
+                // 
+                lblikesi = new Label();
+                this.lblikesi.AutoSize = true;
+                this.lblikesi.BackColor = System.Drawing.Color.Transparent;
+                this.lblikesi.Location = new System.Drawing.Point(198, 74);
+                this.lblikesi.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+                this.lblikesi.Name = "lblikes"+comment.id;
+                this.lblikesi.Size = new System.Drawing.Size(41, 20);
+                this.lblikesi.TabIndex = 5;
+                this.lblikesi.Text = "Likes: "+comment.likes;
+                // 
+                // rtxtb_commenti
+                // 
+                rtxtb_commenti = new RichTextBox();
+                this.rtxtb_commenti.BackColor = System.Drawing.SystemColors.ControlLightLight;
+                this.rtxtb_commenti.BorderStyle = System.Windows.Forms.BorderStyle.None;
+                this.rtxtb_commenti.Location = new System.Drawing.Point(8, 25);
+                this.rtxtb_commenti.Name = "rtxtb_comment"+comment.id;
+                this.rtxtb_commenti.ReadOnly = true;
+                this.rtxtb_commenti.Size = new System.Drawing.Size(905, 41);
+                this.rtxtb_commenti.TabIndex = 2;
+                this.rtxtb_commenti.Text = comment.comentario;
+                this.rtxtb_commenti.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+                // 
+                // lbfechai
+                // 
+                lbfechai = new Label();
+                this.lbfechai.AutoSize = true;
+                this.lbfechai.BackColor = System.Drawing.Color.Transparent;
+                this.lbfechai.Location = new System.Drawing.Point(649, 2);
+                this.lbfechai.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+                this.lbfechai.Name = "lbfecha"+comment.id;
+                this.lbfechai.Size = new System.Drawing.Size(46, 20);
+                this.lbfechai.TabIndex = 6;
+                this.lbfechai.Text = "Fecha: "+comment.fecha_publi;
+                // 
+                // lbinapropi
+                // 
+                lbinapropi = new Label();
+                this.lbinapropi.AutoSize = true;
+                this.lbinapropi.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                this.lbinapropi.ForeColor = System.Drawing.Color.Blue;
+                this.lbinapropi.Location = new System.Drawing.Point(760, 74);
+                this.lbinapropi.Name = "lbinaprop"+comment.id;
+                this.lbinapropi.Size = new System.Drawing.Size(153, 15);
+                this.lbinapropi.TabIndex = 7;
+                this.lbinapropi.Text = "Marcar como inapropiado";
+                // 
+                // pCommenti
+                // 
+                pComment2 = new Panel();
+                this.pComment2.AutoScroll = true;
+                this.pComment2.Controls.Add(this.lbinapropi);
+                this.pComment2.Controls.Add(this.lbfechai);
+                this.pComment2.Controls.Add(this.lbautori);
+                this.pComment2.Controls.Add(this.rtxtb_commenti);
+                this.pComment2.Controls.Add(this.bt_respi);
+                this.pComment2.Controls.Add(this.lblikesi);
+                this.pComment2.Controls.Add(this.bt_likei);
+                this.pComment2.Dock = System.Windows.Forms.DockStyle.Top;
+                this.pComment2.Location = new System.Drawing.Point(2, 3);
+                this.pComment2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+                this.pComment2.Name = "pComment" + i;
+                this.pComment2.Size = new System.Drawing.Size(917, 104);
+                this.pComment2.TabIndex = 6;
+                LayoutComent.Controls.Add(pComment2,0,0);
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LayoutComent_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblikes1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
         {
 
         }

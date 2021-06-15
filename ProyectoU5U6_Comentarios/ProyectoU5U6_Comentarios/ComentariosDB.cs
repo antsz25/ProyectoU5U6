@@ -111,7 +111,7 @@ namespace ProyectoU5U6_Comentarios
                     {
                         if (!inapropiate)
                         {
-                            List<Comentario> comments = ComentariosDB.ReadFromFile(Application.StartupPath + @"\DB\Comentarios.txt");
+                            List<Comentario> comments = ReadFromFile(Application.StartupPath + @"\DB\Comentarios.txt");
                             textOut = new StreamWriter(new FileStream(path, FileMode.Open, FileAccess.Write));
                             // row =  "1000|Prueba|13/Junio/2021|198.192.0.1|Esto es una prueba|3|0"
                             foreach (var c in comments)
@@ -139,8 +139,7 @@ namespace ProyectoU5U6_Comentarios
                         else
                         {
                             List<Comentario> comentarios = ComentariosDB.ReadFromFile(Application.StartupPath + @"\DB\ComentariosInapropiados.txt");
-                            textOut = new StreamWriter(new FileStream(path, FileMode.Open, FileAccess.Write));
-                            // row =  "1000|Prueba|13/Junio/2021|198.192.0.1|Esto es una prueba|3|0"
+                            textOut = new StreamWriter(new FileStream(path, FileMode.Open, FileAccess.Write)); // row =  "1000|Prueba|13/Junio/2021|198.192.0.1|Esto es una prueba|3|0"
                             if (comentarios[0] != null)
                             {
                                 foreach (var c in comentarios)
@@ -191,14 +190,14 @@ namespace ProyectoU5U6_Comentarios
 
                 }
 
-                catch (IOException)
+                catch (IOException e)
                 {
-                    Console.WriteLine("Ya existe el archivo");
+                    MessageBox.Show(e.Message);
                 }
 
-                catch (Exception)
+                catch (Exception e)
                 {
-                    Console.WriteLine("Error");
+                    MessageBox.Show(e.Message);
                 }
 
                 finally
@@ -235,12 +234,9 @@ namespace ProyectoU5U6_Comentarios
                             else
                             {
                                 comments.Add(null);
-                                return comments;
                             }
                         }
-
                         textIn.Close();
-
                         return comments;
                     }
                     else
@@ -248,7 +244,6 @@ namespace ProyectoU5U6_Comentarios
 
                         StreamReader textIn = new StreamReader(new FileStream(path, FileMode.Create));
                         textIn.Close();
-
                         return comments;
                     }
                 }

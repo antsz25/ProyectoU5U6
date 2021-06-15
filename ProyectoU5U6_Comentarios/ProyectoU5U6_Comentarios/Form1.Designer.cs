@@ -34,9 +34,6 @@ namespace ProyectoU5U6_Comentarios
             this.btpubli = new System.Windows.Forms.Button();
             this.rtxtb_publi = new System.Windows.Forms.RichTextBox();
             this.lbpubli = new System.Windows.Forms.Label();
-            this.txtBFiltro = new System.Windows.Forms.TextBox();
-            this.btAddFiltro = new System.Windows.Forms.Button();
-            this.lbfiltro = new System.Windows.Forms.Label();
             this.LayoutComent.SuspendLayout();
             this.pPubliComent.SuspendLayout();
             this.SuspendLayout();
@@ -61,9 +58,6 @@ namespace ProyectoU5U6_Comentarios
             // 
             // pPubliComent
             // 
-            this.pPubliComent.Controls.Add(this.lbfiltro);
-            this.pPubliComent.Controls.Add(this.btAddFiltro);
-            this.pPubliComent.Controls.Add(this.txtBFiltro);
             this.pPubliComent.Controls.Add(this.btpubli);
             this.pPubliComent.Controls.Add(this.rtxtb_publi);
             this.pPubliComent.Controls.Add(this.lbpubli);
@@ -101,33 +95,6 @@ namespace ProyectoU5U6_Comentarios
             this.lbpubli.TabIndex = 0;
             this.lbpubli.Text = "Antonio Sanchez";
             // 
-            // txtBFiltro
-            // 
-            this.txtBFiltro.Location = new System.Drawing.Point(948, 33);
-            this.txtBFiltro.Name = "txtBFiltro";
-            this.txtBFiltro.Size = new System.Drawing.Size(100, 26);
-            this.txtBFiltro.TabIndex = 3;
-            // 
-            // btAddFiltro
-            // 
-            this.btAddFiltro.Location = new System.Drawing.Point(948, 65);
-            this.btAddFiltro.Name = "btAddFiltro";
-            this.btAddFiltro.Size = new System.Drawing.Size(100, 49);
-            this.btAddFiltro.TabIndex = 4;
-            this.btAddFiltro.Text = "Añadir al diccionario";
-            this.btAddFiltro.UseVisualStyleBackColor = true;
-            this.btAddFiltro.Click += new System.EventHandler(this.btAddFiltro_Click);
-            // 
-            // lbfiltro
-            // 
-            this.lbfiltro.AutoSize = true;
-            this.lbfiltro.BackColor = System.Drawing.Color.Transparent;
-            this.lbfiltro.Location = new System.Drawing.Point(974, 10);
-            this.lbfiltro.Name = "lbfiltro";
-            this.lbfiltro.Size = new System.Drawing.Size(38, 20);
-            this.lbfiltro.TabIndex = 5;
-            this.lbfiltro.Text = "Filtro";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -157,9 +124,6 @@ namespace ProyectoU5U6_Comentarios
         private System.Windows.Forms.Button btpubli;
         private System.Windows.Forms.RichTextBox rtxtb_publi;
         private System.Windows.Forms.Label lbpubli;
-        private System.Windows.Forms.Label lbfiltro;
-        private System.Windows.Forms.Button btAddFiltro;
-        private System.Windows.Forms.TextBox txtBFiltro;
     }
 }
 

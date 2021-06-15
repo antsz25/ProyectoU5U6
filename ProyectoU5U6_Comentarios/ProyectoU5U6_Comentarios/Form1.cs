@@ -257,11 +257,5 @@ namespace ProyectoU5U6_Comentarios
         {
             PublicarComentario();//Publica el comentario
         }
-
-        private void btAddFiltro_Click(object sender, EventArgs e)
-        {
-            Filtro.AñadirMalaPalabra(txtBFiltro.Text);//Agregar malas palabras al diccionario   
-            txtBFiltro.Clear();//Limpia el texto
-        }
     }
 }

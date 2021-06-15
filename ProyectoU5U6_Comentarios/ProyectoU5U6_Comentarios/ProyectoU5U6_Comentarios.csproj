@@ -46,6 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comentario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ComentariosDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Filtro.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

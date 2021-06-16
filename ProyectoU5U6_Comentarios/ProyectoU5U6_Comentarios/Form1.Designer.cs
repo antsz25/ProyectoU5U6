@@ -58,6 +58,7 @@ namespace ProyectoU5U6_Comentarios
             // 
             // pPubliComent
             // 
+            this.LayoutComent.SetColumnSpan(this.pPubliComent, 2);
             this.pPubliComent.Controls.Add(this.btpubli);
             this.pPubliComent.Controls.Add(this.rtxtb_publi);
             this.pPubliComent.Controls.Add(this.lbpubli);
@@ -94,6 +95,7 @@ namespace ProyectoU5U6_Comentarios
             this.lbpubli.Size = new System.Drawing.Size(110, 20);
             this.lbpubli.TabIndex = 0;
             this.lbpubli.Text = "Antonio Sanchez";
+            this.lbpubli.Click += new System.EventHandler(this.lbpubli_Click);
             // 
             // Form1
             // 

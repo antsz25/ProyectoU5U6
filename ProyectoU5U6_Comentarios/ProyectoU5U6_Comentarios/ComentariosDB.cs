@@ -333,7 +333,6 @@ namespace ProyectoU5U6_Comentarios
                             textOut.Write(comment.likes + "|");
                             textOut.WriteLine(comment.inapropiado);
                         }
-                        MessageBox.Show("Like agregado con exito");
                         textOut.Close();
 
                     }

@@ -21,12 +21,18 @@ namespace ProyectoU5U6_Comentarios
         private Button bt_respi;
         private Label lblikesi;
         private Button bt_likei;
-        
+        private string Estado; 
+        private string auxautor;
+        enum Estados 
+        {
+            Respuesta,Normal 
+        }
         public Form1()
         {
             InitializeComponent();
             Filtro.CargarDiccionario(Application.StartupPath + @"\DB\Filtro.txt");
             AgregarComentarios(Reescribe());
+            Estado = Estados.Normal.ToString();
         }
         private List<Comentario> Reescribe()
         {
@@ -64,6 +70,7 @@ namespace ProyectoU5U6_Comentarios
                         {
                             inapropiate.Add(comments[i]);
                         }
+                        comments.RemoveAll(x => x == null);
                         comments.RemoveAll(x => x.id == inapropiate[j].id);
                     }
                 }
@@ -120,23 +127,37 @@ namespace ProyectoU5U6_Comentarios
         {
             if (Filtro.ChecarComentario(rtxtb_publi)) //Checa que no contenga ninguna mala palabra
             {
+
                 string date = DateTime.Today.ToShortDateString(); //Se obtiene la fecha de publicacion
                 int last = ComentariosDB.GetLastID(Application.StartupPath + @"\DB\Comentarios.txt"); //Consigue el ultimo comentario publicado
                 Comentario c = new Comentario(last + 1, lbpubli.Text, date, rtxtb_publi.Text, "198.192.0.0", 0, 0);//Se define el comentario
+                MessageBox.Show("Tu mensaje no pudo ser publicado debido a que contiene palabras obscenas.");
                 ComentariosDB.SaveToFile(c, Application.StartupPath + @"\DB\Comentarios.txt", false);//Guardado en archivo
                 ComentariosDB.SaveToFile(c, Application.StartupPath + @"\DB\ComentariosInapropiados.txt",true); //Guardado en archivo
-                MessageBox.Show("Tu mensaje no pudo ser publicado debido a que contiene palabras obscenas.");
+                if (Estado == Estados.Respuesta.ToString())
+                {
+                    Estado = Estados.Normal.ToString();
+                    lbpubli.Text = auxautor;
+                }
+                this.Focus();
             }
             else
             {
+
                 string date = DateTime.Today.ToShortDateString();//Se obtiene la fecha de publicacion
                 int last = ComentariosDB.GetLastID(Application.StartupPath + @"\DB\Comentarios.txt");//Consigue el ultimo comentario publicado
                 Comentario c = new Comentario(last + 1, lbpubli.Text, date, rtxtb_publi.Text, "198.192.0.0", 0, 0);//Se define el comentario
                 ComentariosDB.SaveToFile(c, Application.StartupPath + @"\DB\Comentarios.txt",false);//Guardado en archivo
+                if (Estado == Estados.Respuesta.ToString())
+                {
+                    Estado = Estados.Normal.ToString();
+                    lbpubli.Text = auxautor;
+                }
                 //Se reinicia la forma para cargar los nuevos comentarios
                 this.Controls.Clear(); 
                 this.InitializeComponent(); 
                 this.AgregarComentarios(Reescribe());
+                this.Focus();
             }
         }
         private void AgregarComentarios(List<Comentario> comments)
@@ -236,6 +257,7 @@ namespace ProyectoU5U6_Comentarios
                         this.lbinapropi.Size = new System.Drawing.Size(153, 15);
                         this.lbinapropi.TabIndex = 7;
                         this.lbinapropi.Text = "Marcar como inapropiado";
+                        this.lbinapropi.Click += new System.EventHandler(this.lbinapropi_Click);
                         // 
                         // pCommenti
                         // 
@@ -279,9 +301,50 @@ namespace ProyectoU5U6_Comentarios
 
         private void button2_Click(object sender, EventArgs e) //Responder a comentario
         {
-
+            if (Estado == Estados.Normal.ToString())
+            {
+                Estado = Estados.Respuesta.ToString();
+                int id = int.Parse((sender as Button).Name.Substring(7));
+                Comentario comment = ComentariosDB.GetComment(Application.StartupPath + @"\DB\Comentarios.txt", id);
+                auxautor = lbpubli.Text;
+                lbpubli.Text = $"In response to: {comment.autor} ({comment.id})";
+            }
         }
-
+        private void lbinapropi_Click(object sender, EventArgs e) //Responder a comentario
+        {
+            try
+            {
+                int id = int.Parse((sender as Label).Name.Substring(9));
+                Comentario inap = ComentariosDB.GetComment(Application.StartupPath + @"\DB\Comentarios.txt", id);
+                List<Comentario> comentarios = ComentariosDB.ReadFromFile(Application.StartupPath + @"\DB\Comentarios.txt");
+                int h = comentarios.FindIndex(x => x.id == inap.id);
+                inap.inapropiado = inap.inapropiado + 1;
+                comentarios[h] = inap;
+                if (comentarios[h].inapropiado > 10)
+                {
+                    List<Comentario> inapropiates = ComentariosDB.ReadFromFile(Application.StartupPath + @"\DB\ComentariosInapropiados.txt");
+                    inapropiates.Add(comentarios[h]);
+                    inapropiates.Sort();
+                    ComentariosDB.SaveToFile(inapropiates, Application.StartupPath + @"\DB\ComentariosInapropiados.txt", true);
+                }
+                ComentariosDB.ChangeALine(Application.StartupPath + @"\DB\Comentarios.txt", comentarios);
+                this.Controls.Clear();
+                this.InitializeComponent();
+                this.AgregarComentarios(Reescribe());
+            }
+            catch(FormatException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch(ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void button1_Click(object sender, EventArgs e) //Dar me gusta a un comentario
         {
             try
@@ -332,7 +395,8 @@ namespace ProyectoU5U6_Comentarios
             Controls.Clear(); 
             this.InitializeComponent();
             Filtro.CargarDiccionario(Application.StartupPath + @"\DB\Filtro.txt");
-            this.AgregarComentarios(Reescribe()); 
+            this.AgregarComentarios(Reescribe());
+            Estado = Estados.Normal.ToString();
             this.Show();
         }
         #region Code Extract from https://stackoverflow.com/questions/400113/best-way-to-implement-keyboard-shortcuts-in-a-windows-forms-application/400325
@@ -357,6 +421,11 @@ namespace ProyectoU5U6_Comentarios
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
+        }
+
+        private void lbpubli_Click(object sender, EventArgs e)
         {
 
         }

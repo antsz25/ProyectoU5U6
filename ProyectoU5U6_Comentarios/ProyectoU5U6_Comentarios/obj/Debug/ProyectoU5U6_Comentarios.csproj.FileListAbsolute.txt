@@ -1,7 +1,6 @@
 C:\Users\MEGAS PC\OOP_SanchezSantos\Proyecto\ProyectoU5U6\ProyectoU5U6_Comentarios\ProyectoU5U6_Comentarios\bin\Debug\ProyectoU5U6_Comentarios.exe.config
 C:\Users\MEGAS PC\OOP_SanchezSantos\Proyecto\ProyectoU5U6\ProyectoU5U6_Comentarios\ProyectoU5U6_Comentarios\bin\Debug\ProyectoU5U6_Comentarios.exe
 C:\Users\MEGAS PC\OOP_SanchezSantos\Proyecto\ProyectoU5U6\ProyectoU5U6_Comentarios\ProyectoU5U6_Comentarios\bin\Debug\ProyectoU5U6_Comentarios.pdb
-C:\Users\MEGAS PC\OOP_SanchezSantos\Proyecto\ProyectoU5U6\ProyectoU5U6_Comentarios\ProyectoU5U6_Comentarios\obj\Debug\ProyectoU5U6_Comentarios.csprojAssemblyReference.cache
 C:\Users\MEGAS PC\OOP_SanchezSantos\Proyecto\ProyectoU5U6\ProyectoU5U6_Comentarios\ProyectoU5U6_Comentarios\obj\Debug\ProyectoU5U6_Comentarios.Properties.Resources.resources
 C:\Users\MEGAS PC\OOP_SanchezSantos\Proyecto\ProyectoU5U6\ProyectoU5U6_Comentarios\ProyectoU5U6_Comentarios\obj\Debug\ProyectoU5U6_Comentarios.csproj.GenerateResource.cache
 C:\Users\MEGAS PC\OOP_SanchezSantos\Proyecto\ProyectoU5U6\ProyectoU5U6_Comentarios\ProyectoU5U6_Comentarios\obj\Debug\ProyectoU5U6_Comentarios.csproj.CoreCompileInputs.cache

@@ -19,6 +19,7 @@ namespace ProyectoU5U6_Comentarios
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+            
         }
     }
 }

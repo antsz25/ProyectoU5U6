@@ -47,9 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comentario.cs" />
-    <Compile Include="ComentariosDB.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ComentariosDB.cs" />
     <Compile Include="Filtro.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -57,10 +55,19 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="MalasPalabras.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MalasPalabras.Designer.cs">
+      <DependentUpon>MalasPalabras.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MalasPalabras.resx">
+      <DependentUpon>MalasPalabras.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

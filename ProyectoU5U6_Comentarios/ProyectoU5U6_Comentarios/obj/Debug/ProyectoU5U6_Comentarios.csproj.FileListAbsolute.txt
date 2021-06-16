@@ -7,3 +7,5 @@ C:\Users\MEGAS PC\OOP_SanchezSantos\Proyecto\ProyectoU5U6\ProyectoU5U6_Comentari
 C:\Users\MEGAS PC\OOP_SanchezSantos\Proyecto\ProyectoU5U6\ProyectoU5U6_Comentarios\ProyectoU5U6_Comentarios\obj\Debug\ProyectoU5U6_Comentarios.exe
 C:\Users\MEGAS PC\OOP_SanchezSantos\Proyecto\ProyectoU5U6\ProyectoU5U6_Comentarios\ProyectoU5U6_Comentarios\obj\Debug\ProyectoU5U6_Comentarios.pdb
 C:\Users\MEGAS PC\OOP_SanchezSantos\Proyecto\ProyectoU5U6\ProyectoU5U6_Comentarios\ProyectoU5U6_Comentarios\obj\Debug\ProyectoU5U6_Comentarios.Form1.resources
+C:\Users\MEGAS PC\OOP_SanchezSantos\Proyecto\ProyectoU5U6\ProyectoU5U6_Comentarios\ProyectoU5U6_Comentarios\obj\Debug\ProyectoU5U6_Comentarios.csprojAssemblyReference.cache
+C:\Users\MEGAS PC\OOP_SanchezSantos\Proyecto\ProyectoU5U6\ProyectoU5U6_Comentarios\ProyectoU5U6_Comentarios\obj\Debug\ProyectoU5U6_Comentarios.MalasPalabras.resources

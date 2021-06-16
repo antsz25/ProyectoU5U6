@@ -327,15 +327,38 @@ namespace ProyectoU5U6_Comentarios
         {
 
         }
-        //Code Extract from https://stackoverflow.com/questions/400113/best-way-to-implement-keyboard-shortcuts-in-a-windows-forms-application/400325
+        private void RenovarForma()
+        {
+            Controls.Clear(); 
+            this.InitializeComponent();
+            Filtro.CargarDiccionario(Application.StartupPath + @"\DB\Filtro.txt");
+            this.AgregarComentarios(Reescribe()); 
+            this.Show();
+        }
+        #region Code Extract from https://stackoverflow.com/questions/400113/best-way-to-implement-keyboard-shortcuts-in-a-windows-forms-application/400325
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData) //Checa las teclas que se presionan
         {
             if (keyData == (Keys.Control | Keys.Shift | Keys.F))
             {
+                var form2 = new MalasPalabras();
+                this.Hide();
+                form2.Closed += (s, args) => RenovarForma(); //Se define un evento
+                form2.Show();
 
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+        #endregion
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
         }
     }
 }

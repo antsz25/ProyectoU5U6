@@ -47,15 +47,18 @@ namespace ProyectoU5U6_Comentarios
                             List<Comentario> comments = ComentariosDB.ReadFromFile(Application.StartupPath + @"\DB\ComentariosInapropiados.txt");
                             textOut = new StreamWriter(new FileStream(path, FileMode.Open, FileAccess.Write));
                             // row =  "1000|Prueba|13/Junio/2021|198.192.0.1|Esto es una prueba|3|0"
-                            foreach (var c in comments)
+                            if (comments.Count != 0 && comments[0] != null)
                             {
-                                textOut.Write(c.id + "|");
-                                textOut.Write(c.autor + "|");
-                                textOut.Write(c.fecha_publi + "|");
-                                textOut.Write(c.dir_ip + "|");
-                                textOut.Write(c.comentario + "|");
-                                textOut.Write(c.likes + "|");
-                                textOut.WriteLine(c.inapropiado);
+                                foreach (var c in comments)
+                                {
+                                    textOut.Write(c.id + "|");
+                                    textOut.Write(c.autor + "|");
+                                    textOut.Write(c.fecha_publi + "|");
+                                    textOut.Write(c.dir_ip + "|");
+                                    textOut.Write(c.comentario + "|");
+                                    textOut.Write(c.likes + "|");
+                                    textOut.WriteLine(c.inapropiado);
+                                }
                             }
                             textOut.Write(comment.id + "|");
                             textOut.Write(comment.autor + "|");
@@ -140,8 +143,9 @@ namespace ProyectoU5U6_Comentarios
                         {
                             List<Comentario> comentarios = ComentariosDB.ReadFromFile(Application.StartupPath + @"\DB\ComentariosInapropiados.txt");
                             textOut = new StreamWriter(new FileStream(path, FileMode.Open, FileAccess.Write)); // row =  "1000|Prueba|13/Junio/2021|198.192.0.1|Esto es una prueba|3|0"
-                            if (comentarios[0] != null)
+                            if (comentarios.Count != 0 || comentarios.Count != 0 && comentarios[0] != null)
                             {
+                                comentarios.RemoveAll(x => x == null);
                                 foreach (var c in comentarios)
                                 {
                                     textOut.Write(c.id + "|");
@@ -155,7 +159,10 @@ namespace ProyectoU5U6_Comentarios
                             }
                             else
                             {
-                                comentarios.RemoveAt(0);
+                                if (comentarios.Count != 0)
+                                {
+                                    comentarios.RemoveAt(0);
+                                }
                             }
                             foreach (var comment in commentaries)
                             {
@@ -264,13 +271,38 @@ namespace ProyectoU5U6_Comentarios
                     List<Comentario> comments = ReadFromFile(path);
 
 
-                    var filtro_productos = from c in comments
+                    var filtro_comentario = from c in comments
                                            select c;
-                    return filtro_productos.Last().id;
+                    return filtro_comentario.Last().id;
+                }
+                catch(ArgumentException e)
+                {
+                    return 999;
                 }
                 catch(Exception e)
                 {
                     return 999;
+                }
+            }
+            public static Comentario GetComment(string path, int id)
+            {
+                try
+                {
+                    List<Comentario> comments = ReadFromFile(path);
+
+
+                    var filtro_comentario = from c in comments
+                                           where c.id == id
+                                           select c;
+                    return filtro_comentario.First();
+                }
+                catch (ArgumentException e)
+                {
+                    return null;
+                }
+                catch (Exception e)
+                {
+                    return null;
                 }
             }
         }

@@ -19,7 +19,6 @@ namespace ProyectoU5U6_Comentarios
             {
                 return this.id.CompareTo((obj as Comentario).id);
             }
-
             public override string ToString()
             {
                 return string.Format($"{id},{autor},{fecha_publi},{comentario},{dir_ip},{inapropiado},{likes}");

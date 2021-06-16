@@ -29,52 +29,90 @@ namespace ProyectoU5U6_Comentarios
         }
         private List<Comentario> Reescribe()
         {
-            List<Comentario> comments = null;
-            List<Comentario> inapropiate = null;
+            List<Comentario> comments;
+            List<Comentario> inapropiate;
             try
             {
                 comments = ComentariosDB.ReadFromFile(Application.StartupPath + @"\DB\Comentarios.txt");
                 inapropiate = ComentariosDB.ReadFromFile(Application.StartupPath + @"\DB\ComentariosInapropiados.txt");
-                if (inapropiate[0] ==null)
+                if (inapropiate.Count==0 || inapropiate.FindLast(x=> x ==null)==null)
                 {
-                    inapropiate.RemoveAt(0);
-                    for (int i = 0; i <= comments.Count - 1; i++)
+                    if(inapropiate.Count != 0)
                     {
-                        if (Filtro.ChecarComentario(comments[i].comentario))
+                        inapropiate.RemoveAll(x => x == null);
+                    }
+                    if (inapropiate.Count == 0)
+                    {
+                        for (int i = 0; i <= comments.Count - 1; i++)
                         {
-                            inapropiate.Add(comments[i]);
+                            if (Filtro.ChecarComentario(comments[i].comentario))
+                            {
+                                inapropiate.Add(comments[i]);
+                                ComentariosDB.SaveToFile(inapropiate[inapropiate.Count - 1], Application.StartupPath + @"\DB\ComentariosInapropiados.txt", true);
+                            }
                         }
                     }
-                    ComentariosDB.SaveToFile(inapropiate, Application.StartupPath + @"\DB\ComentariosInapropiados.txt", true);
                 }
+                int conteo = inapropiate.Count;
                 for (int i = 0; i <= comments.Count - 1; i++)
                 {
 
                     for (int j = 0; j <= inapropiate.Count - 1; j++)
                     {
-                        if (Filtro.ChecarComentario(comments[i].comentario) && comments[i].id != inapropiate[j].id)
+                        if (Filtro.ChecarComentario(comments[i].comentario) && inapropiate.FindIndex(x=> x.id==comments[i].id)==-1)
                         {
                             inapropiate.Add(comments[i]);
                         }
                         comments.RemoveAll(x => x.id == inapropiate[j].id);
                     }
                 }
-                inapropiate.Sort();
-                inapropiate.Reverse();
-                ComentariosDB.SaveToFile(inapropiate, Application.StartupPath + @"\DB\ComentariosInapropiados.txt", true);
+                if (conteo != inapropiate.Count) //Evita que se guarde nuevamente los mismos comentarios
+                {
+                    List<Comentario> aux = new List<Comentario>();
+                    Comentario auxiliar = new Comentario();
+                    List<Comentario> aux2 = ComentariosDB.ReadFromFile(Application.StartupPath + @"\DB\Comentarios.txt");
+                    try
+                    {
+                        for (int i = conteo; i <= inapropiate.Count - 1; i++)
+                        {
+                            auxiliar = aux2.Find(x => x.id == inapropiate[i].id);
+                            aux.Add(auxiliar);
+                        }
+                    }
+                    catch(ArgumentOutOfRangeException)
+                    {
+                        
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+
+                    }
+                    catch (ArgumentException)
+                    {
+
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                    ComentariosDB.SaveToFile(aux, Application.StartupPath + @"\DB\ComentariosInapropiados.txt", true);
+                }
+                else
+                {
+
+                }
                 comments.Sort();
-                comments.Reverse();
                 return comments;
             }
             catch(ArgumentNullException e)
             {
-                MessageBox.Show("Error al cargar comentarios: "+e);
-                return comments;
+                MessageBox.Show("Error al cargar comentarios: " + e.Message + e.StackTrace);
+                return comments=null;
             }
             catch(Exception e)
             {
-                MessageBox.Show("Error al cargar comentarios: " + e);
-                return comments;
+                MessageBox.Show("Error al cargar comentarios: " + e.Message+e.StackTrace);
+                return comments=null;
             }
         }
         private void PublicarComentario()
@@ -104,122 +142,128 @@ namespace ProyectoU5U6_Comentarios
         {
             try
             {
-
-                foreach (var comment in comments)
+                if (comments == null)
                 {
-                    // 
-                    // lbautori
-                    // 
-                    lbautori = new Label();
-                    this.lbautori.AutoSize = true;
-                    this.lbautori.BackColor = System.Drawing.Color.Transparent;
-                    this.lbautori.Location = new System.Drawing.Point(4, 2);
-                    this.lbautori.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-                    this.lbautori.Name = "lbautor" + comment.id;
-                    this.lbautori.Size = new System.Drawing.Size(40, 20);
-                    this.lbautori.TabIndex = 3;
-                    this.lbautori.Text = comment.autor;
-                    // 
-                    // bt_likei
-                    // 
-                    bt_likei = new Button();
-                    this.bt_likei.Location = new System.Drawing.Point(8, 69);
-                    this.bt_likei.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-                    this.bt_likei.Name = "bt_like" + comment.id;
-                    this.bt_likei.Size = new System.Drawing.Size(81, 28);
-                    this.bt_likei.TabIndex = 0;
-                    this.bt_likei.Text = "Me gusta";
-                    this.bt_likei.UseVisualStyleBackColor = true;
-                    this.bt_likei.Click += new System.EventHandler(this.button1_Click);
-                    // 
-                    // bt_respi
-                    // 
-                    bt_respi = new Button();
-                    this.bt_respi.Location = new System.Drawing.Point(97, 69);
-                    this.bt_respi.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-                    this.bt_respi.Name = "bt_resp" + comment.id;
-                    this.bt_respi.Size = new System.Drawing.Size(87, 28);
-                    this.bt_respi.TabIndex = 1;
-                    this.bt_respi.Text = "Responder";
-                    this.bt_respi.UseVisualStyleBackColor = true;
-                    this.bt_respi.Click += new System.EventHandler(this.button2_Click);
-                    // 
-                    // lblikesi
-                    // 
-                    lblikesi = new Label();
-                    this.lblikesi.AutoSize = true;
-                    this.lblikesi.BackColor = System.Drawing.Color.Transparent;
-                    this.lblikesi.Location = new System.Drawing.Point(198, 74);
-                    this.lblikesi.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-                    this.lblikesi.Name = "lblikes" + comment.id;
-                    this.lblikesi.Size = new System.Drawing.Size(41, 20);
-                    this.lblikesi.TabIndex = 5;
-                    this.lblikesi.Text = "Likes: " + comment.likes;
-                    // 
-                    // rtxtb_commenti
-                    // 
-                    rtxtb_commenti = new RichTextBox();
-                    this.rtxtb_commenti.BackColor = System.Drawing.SystemColors.ControlLightLight;
-                    this.rtxtb_commenti.BorderStyle = System.Windows.Forms.BorderStyle.None;
-                    this.rtxtb_commenti.Location = new System.Drawing.Point(8, 25);
-                    this.rtxtb_commenti.Name = "rtxtb_comment" + comment.id;
-                    this.rtxtb_commenti.ReadOnly = true;
-                    this.rtxtb_commenti.Size = new System.Drawing.Size(905, 41);
-                    this.rtxtb_commenti.TabIndex = 2;
-                    this.rtxtb_commenti.Text = comment.comentario;
-                    this.rtxtb_commenti.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
-                    // 
-                    // lbfechai
-                    // 
-                    lbfechai = new Label();
-                    this.lbfechai.AutoSize = true;
-                    this.lbfechai.BackColor = System.Drawing.Color.Transparent;
-                    this.lbfechai.Location = new System.Drawing.Point(649, 2);
-                    this.lbfechai.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-                    this.lbfechai.Name = "lbfecha" + comment.id;
-                    this.lbfechai.Size = new System.Drawing.Size(46, 20);
-                    this.lbfechai.TabIndex = 6;
-                    this.lbfechai.Text = "Fecha: " + comment.fecha_publi;
-                    // 
-                    // lbinapropi
-                    // 
-                    lbinapropi = new Label();
-                    this.lbinapropi.AutoSize = true;
-                    this.lbinapropi.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.lbinapropi.ForeColor = System.Drawing.Color.Blue;
-                    this.lbinapropi.Location = new System.Drawing.Point(760, 74);
-                    this.lbinapropi.Name = "lbinaprop" + comment.id;
-                    this.lbinapropi.Size = new System.Drawing.Size(153, 15);
-                    this.lbinapropi.TabIndex = 7;
-                    this.lbinapropi.Text = "Marcar como inapropiado";
-                    // 
-                    // pCommenti
-                    // 
-                    pComment2 = new Panel();
-                    this.pComment2.AutoScroll = true;
-                    this.pComment2.Controls.Add(this.lbinapropi);
-                    this.pComment2.Controls.Add(this.lbfechai);
-                    this.pComment2.Controls.Add(this.lbautori);
-                    this.pComment2.Controls.Add(this.rtxtb_commenti);
-                    this.pComment2.Controls.Add(this.bt_respi);
-                    this.pComment2.Controls.Add(this.lblikesi);
-                    this.pComment2.Controls.Add(this.bt_likei);
-                    this.pComment2.Dock = System.Windows.Forms.DockStyle.Top;
-                    this.pComment2.Location = new System.Drawing.Point(2, 3);
-                    this.pComment2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-                    this.pComment2.Name = "pComment" + comment.id;
-                    this.pComment2.Size = new System.Drawing.Size(917, 104);
-                    this.pComment2.TabIndex = 6;
-                    LayoutComent.Controls.Add(pComment2, 0, 0);
+                    
+                }
+                else
+                {
+                    foreach (var comment in comments)
+                    {
+                        // 
+                        // lbautori
+                        // 
+                        lbautori = new Label();
+                        this.lbautori.AutoSize = true;
+                        this.lbautori.BackColor = System.Drawing.Color.Transparent;
+                        this.lbautori.Location = new System.Drawing.Point(4, 2);
+                        this.lbautori.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+                        this.lbautori.Name = "lbautor" + comment.id;
+                        this.lbautori.Size = new System.Drawing.Size(40, 20);
+                        this.lbautori.TabIndex = 3;
+                        this.lbautori.Text = comment.autor;
+                        // 
+                        // bt_likei
+                        // 
+                        bt_likei = new Button();
+                        this.bt_likei.Location = new System.Drawing.Point(8, 69);
+                        this.bt_likei.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+                        this.bt_likei.Name = "bt_like" + comment.id;
+                        this.bt_likei.Size = new System.Drawing.Size(81, 28);
+                        this.bt_likei.TabIndex = 0;
+                        this.bt_likei.Text = "Me gusta";
+                        this.bt_likei.UseVisualStyleBackColor = true;
+                        this.bt_likei.Click += new System.EventHandler(this.button1_Click);
+                        // 
+                        // bt_respi
+                        // 
+                        bt_respi = new Button();
+                        this.bt_respi.Location = new System.Drawing.Point(97, 69);
+                        this.bt_respi.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+                        this.bt_respi.Name = "bt_resp" + comment.id;
+                        this.bt_respi.Size = new System.Drawing.Size(87, 28);
+                        this.bt_respi.TabIndex = 1;
+                        this.bt_respi.Text = "Responder";
+                        this.bt_respi.UseVisualStyleBackColor = true;
+                        this.bt_respi.Click += new System.EventHandler(this.button2_Click);
+                        // 
+                        // lblikesi
+                        // 
+                        lblikesi = new Label();
+                        this.lblikesi.AutoSize = true;
+                        this.lblikesi.BackColor = System.Drawing.Color.Transparent;
+                        this.lblikesi.Location = new System.Drawing.Point(198, 74);
+                        this.lblikesi.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+                        this.lblikesi.Name = "lblikes" + comment.id;
+                        this.lblikesi.Size = new System.Drawing.Size(41, 20);
+                        this.lblikesi.TabIndex = 5;
+                        this.lblikesi.Text = "Likes: " + comment.likes;
+                        // 
+                        // rtxtb_commenti
+                        // 
+                        rtxtb_commenti = new RichTextBox();
+                        this.rtxtb_commenti.BackColor = System.Drawing.SystemColors.ControlLightLight;
+                        this.rtxtb_commenti.BorderStyle = System.Windows.Forms.BorderStyle.None;
+                        this.rtxtb_commenti.Location = new System.Drawing.Point(8, 25);
+                        this.rtxtb_commenti.Name = "rtxtb_comment" + comment.id;
+                        this.rtxtb_commenti.ReadOnly = true;
+                        this.rtxtb_commenti.Size = new System.Drawing.Size(905, 41);
+                        this.rtxtb_commenti.TabIndex = 2;
+                        this.rtxtb_commenti.Text = comment.comentario;
+                        this.rtxtb_commenti.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+                        // 
+                        // lbfechai
+                        // 
+                        lbfechai = new Label();
+                        this.lbfechai.AutoSize = true;
+                        this.lbfechai.BackColor = System.Drawing.Color.Transparent;
+                        this.lbfechai.Location = new System.Drawing.Point(649, 2);
+                        this.lbfechai.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+                        this.lbfechai.Name = "lbfecha" + comment.id;
+                        this.lbfechai.Size = new System.Drawing.Size(46, 20);
+                        this.lbfechai.TabIndex = 6;
+                        this.lbfechai.Text = "Fecha: " + comment.fecha_publi;
+                        // 
+                        // lbinapropi
+                        // 
+                        lbinapropi = new Label();
+                        this.lbinapropi.AutoSize = true;
+                        this.lbinapropi.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                        this.lbinapropi.ForeColor = System.Drawing.Color.Blue;
+                        this.lbinapropi.Location = new System.Drawing.Point(760, 74);
+                        this.lbinapropi.Name = "lbinaprop" + comment.id;
+                        this.lbinapropi.Size = new System.Drawing.Size(153, 15);
+                        this.lbinapropi.TabIndex = 7;
+                        this.lbinapropi.Text = "Marcar como inapropiado";
+                        // 
+                        // pCommenti
+                        // 
+                        pComment2 = new Panel();
+                        this.pComment2.AutoScroll = true;
+                        this.pComment2.Controls.Add(this.lbinapropi);
+                        this.pComment2.Controls.Add(this.lbfechai);
+                        this.pComment2.Controls.Add(this.lbautori);
+                        this.pComment2.Controls.Add(this.rtxtb_commenti);
+                        this.pComment2.Controls.Add(this.bt_respi);
+                        this.pComment2.Controls.Add(this.lblikesi);
+                        this.pComment2.Controls.Add(this.bt_likei);
+                        this.pComment2.Dock = System.Windows.Forms.DockStyle.Top;
+                        this.pComment2.Location = new System.Drawing.Point(2, 3);
+                        this.pComment2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+                        this.pComment2.Name = "pComment" + comment.id;
+                        this.pComment2.Size = new System.Drawing.Size(917, 104);
+                        this.pComment2.TabIndex = 6;
+                        LayoutComent.Controls.Add(pComment2, 0, 0);
+                    }
                 }
             }
-            catch(ArgumentException e)
+            catch (ArgumentException e)
             {
-                MessageBox.Show("Error al mostrar comentario: "+e);
+                MessageBox.Show("Error al mostrar comentario: "+e.Message);
             }
             catch(Exception e)
             {
-                MessageBox.Show("Error al mostrar comentario: "+e);
+                MessageBox.Show("Error al mostrar comentario: "+e.Message);
             }
         }
         private void Form1_Load(object sender, EventArgs e)
@@ -232,14 +276,35 @@ namespace ProyectoU5U6_Comentarios
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e) //Responder a comentario
         {
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e) //Dar me gusta a un comentario
         {
-
+            try
+            {
+                int id = int.Parse((sender as Button).Name.Substring(7));
+                Comentario like = ComentariosDB.GetComment(Application.StartupPath + @"\DB\Comentarios.txt", id);
+                List<Comentario> comentarios = ComentariosDB.ReadFromFile(Application.StartupPath + @"\DB\Comentarios.txt");
+                int h = comentarios.FindIndex(x => x.id == like.id);
+                like.likes = like.likes + 1;
+                comentarios[h] = like;
+                ComentariosDB.SaveToFile(comentarios, Application.StartupPath + @"\DB\Comentarios.txt", false);
+                MessageBox.Show("Like agregado con exito");
+                this.Controls.Clear();
+                this.InitializeComponent();
+                this.AgregarComentarios(Reescribe());
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)

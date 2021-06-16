@@ -218,10 +218,11 @@ namespace ProyectoU5U6_Comentarios
             public static List<Comentario> ReadFromFile(string path)
             {
                 List<Comentario> comments = new List<Comentario>();
+                StreamReader textIn = null;
                 try
                 {
                     if (File.Exists(path)) {
-                        StreamReader textIn = new StreamReader(new FileStream(path, FileMode.Open, FileAccess.Read));
+                        textIn = new StreamReader(new FileStream(path, FileMode.Open, FileAccess.Read));
                         while (textIn.Peek() != -1)    // Leer hasta el final
                         {
                             string row = textIn.ReadLine();  // row =  "1000|Prueba|13/Junio/2021|198.192.0.1|Esto es una prueba|3|0"
@@ -249,7 +250,7 @@ namespace ProyectoU5U6_Comentarios
                     else
                     {
 
-                        StreamReader textIn = new StreamReader(new FileStream(path, FileMode.Create));
+                        textIn = new StreamReader(new FileStream(path, FileMode.Create));
                         textIn.Close();
                         return comments;
                     }
@@ -261,6 +262,10 @@ namespace ProyectoU5U6_Comentarios
                 catch(Exception e)
                 {
                     MessageBox.Show(e.Message);
+                }
+                if(textIn!= null)
+                {
+                    textIn.Close();
                 }
                 return comments;
             }
@@ -303,6 +308,66 @@ namespace ProyectoU5U6_Comentarios
                 catch (Exception e)
                 {
                     return null;
+                }
+            }
+            public static void ChangeALine(string path, List<Comentario> comments)
+            {
+                StreamWriter textOut = null;
+                try
+                {
+                    if (File.Exists(path))
+                    {
+                        if (comments != null)
+                        {
+                            File.Delete(path);
+                            textOut = new StreamWriter(new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write));
+
+                            foreach (var comment in comments)
+                            {
+                                textOut.Write(comment.id + "|");
+                                textOut.Write(comment.autor + "|");
+                                textOut.Write(comment.fecha_publi + "|");
+                                textOut.Write(comment.dir_ip + "|");
+                                textOut.Write(comment.comentario + "|");
+                                textOut.Write(comment.likes + "|");
+                                textOut.WriteLine(comment.inapropiado);
+                            }
+                            MessageBox.Show("Like agregado con exito");
+                            textOut.Close();
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("La lista mandada como parametro esta definida como null, por lo que no se realizo ningun cambio en el documento");
+                        }
+                    }
+                }
+                catch (IOException e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+                catch(UnauthorizedAccessException e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+                catch (ArgumentException e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+                catch(NotSupportedException e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+                finally
+                {
+                    if(textOut!= null)
+                    {
+                        textOut.Close();
+                    }
                 }
             }
         }

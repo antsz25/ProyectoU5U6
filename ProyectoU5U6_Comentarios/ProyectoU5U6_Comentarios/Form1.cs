@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ProyectoU5U6_Comentarios
@@ -291,8 +292,7 @@ namespace ProyectoU5U6_Comentarios
                 int h = comentarios.FindIndex(x => x.id == like.id);
                 like.likes = like.likes + 1;
                 comentarios[h] = like;
-                ComentariosDB.SaveToFile(comentarios, Application.StartupPath + @"\DB\Comentarios.txt", false);
-                MessageBox.Show("Like agregado con exito");
+                ComentariosDB.ChangeALine(Application.StartupPath + @"\DB\Comentarios.txt",comentarios);
                 this.Controls.Clear();
                 this.InitializeComponent();
                 this.AgregarComentarios(Reescribe());
@@ -321,6 +321,21 @@ namespace ProyectoU5U6_Comentarios
         private void btpubli_Click(object sender, EventArgs e)
         {
             PublicarComentario();//Publica el comentario
+        }
+
+        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+        }
+        //Code Extract from https://stackoverflow.com/questions/400113/best-way-to-implement-keyboard-shortcuts-in-a-windows-forms-application/400325
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData) //Checa las teclas que se presionan
+        {
+            if (keyData == (Keys.Control | Keys.Shift | Keys.F))
+            {
+
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

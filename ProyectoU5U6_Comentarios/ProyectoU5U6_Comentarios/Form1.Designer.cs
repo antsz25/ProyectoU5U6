@@ -111,6 +111,7 @@ namespace ProyectoU5U6_Comentarios
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Comentarios";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
             this.LayoutComent.ResumeLayout(false);
             this.pPubliComent.ResumeLayout(false);
             this.pPubliComent.PerformLayout();
